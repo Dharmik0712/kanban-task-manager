@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="kanbanApp">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kanban Task Manager</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-drag-and-drop-lists/2.1.0/angular-drag-and-drop-lists.min.js"></script>
+    <script src="kanbanController.js"></script>
+</head>
+<body ng-controller="KanbanController" ng-class="themeClass">
+    <div class="container">
+        <header>
+            <h1>Kanban Task Manager</h1>
+            <div class="right-controls">
+                <input type="text" ng-model="searchTask" placeholder="Search task...">
+                <button class="theme-toggle" ng-click="toggleTheme()">Toggle Theme</button>
+            </div>
+        </header>
+        <section class="task-inputs">
+            <input type="text" ng-model="newTask.name" placeholder="Task name...">
+            <input type="date" ng-model="newTask.dueDate">
+            <select ng-model="newTask.priority">
+                <option value="High">High</option>
+                <option value="Medium">Medium</option>
+                <option value="Low">Low</option>
+            </select>
+            <button ng-click="addTask()">Add Task</button>
+        </section>
+        <div class="kanban-board">
+            <div class="column" ng-repeat="(status, tasks) in taskCategories" dnd-list="tasks" ng-class="getSectionClass(status)">
+                <h2 class="section-title">{{ status }}</h2>
+                <div class="task-list">
+                    <div class="task" ng-repeat="task in tasks | filter:searchTask" dnd-draggable="task" dnd-moved="tasks.splice($index, 1)">
+                        <input type="checkbox" ng-click="markAsCompleted(task, status)" ng-checked="status === 'Completed'">
+                        <div class="task-info">
+                            <input type="text" ng-model="task.name" ng-blur="saveEdit(task, status)" ng-keypress="$event.keyCode == 13 && saveEdit(task, status)">                            
+                            <div class="due-date">
+                                <span ng-if="!task.editingDueDate" ng-click="enableDateEdit(task)">{{ formatDate(task.dueDate) || 'No Due Date' }}</span>
+                                <input type="date" ng-model="task.dueDate" ng-blur="saveDateEdit(task, status)" ng-if="task.editingDueDate">
+                            </div>
+                            <select ng-model="task.priority" ng-change="saveEdit(task, status)">
+                                <option value="High">High</option>
+                                <option value="Medium">Medium</option>
+                                <option value="Low">Low</option>
+                            </select>
+                        </div>
+                        <div class="task-actions">
+                            <button class="delete-btn" ng-click="deleteTask(task, status)">🗑️</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

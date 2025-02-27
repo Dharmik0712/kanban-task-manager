@@ -1,0 +1,85 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    transition: background 0.3s ease-in-out, color 0.3s ease-in-out;
+}
+
+.light-theme {
+    background: linear-gradient(120deg, #f0f4f8, #d9e2ec);
+    color: #222;
+}
+
+.dark-theme {
+    background: linear-gradient(120deg, #232526, #414345);
+    color: white;
+}
+
+.container {
+    width: 90%;
+    margin: auto;
+    margin-top: 10px;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    background: #0073e6;
+    color: white;
+    border-radius: 10px;
+}
+
+.task-inputs {
+    display: flex;
+    gap: 10px;
+    margin: 20px 0;
+    flex-wrap: wrap;
+}
+input, select, button {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+button {
+    background: #0073e6;
+    color: white;
+    cursor: pointer;
+}
+
+.kanban-board {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+.column {
+    flex: 1;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+}
+
+.todo { background: #ffeb3b; }
+.in-progress { background: #64b5f6; }
+.completed { background: #81c784; }
+
+.task {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #eef;
+    padding: 10px;
+    border-radius: 5px;
+    margin: 10px 0;
+}
+.due-date {
+    cursor: pointer;
+    margin-top: 5px;
+    font-size: 14px;
+    color: #555;
+}
+.due-date input {
+    font-size: 14px;
+}
