@@ -7,6 +7,10 @@ app.controller("KanbanController", function ($scope) {
         $scope.themeClass = $scope.themeClass === "light-theme" ? "dark-theme" : "light-theme";
     };
 
+    // ✅ Today's date for restricting past deadlines
+    let today = new Date();
+    $scope.today = today.toISOString().split("T")[0];
+
     $scope.newTask = { name: "", dueDate: "", priority: "Low" };
 
     $scope.taskCategories = JSON.parse(localStorage.getItem("tasks")) || {
@@ -58,6 +62,7 @@ app.controller("KanbanController", function ($scope) {
             completed: status === "Completed",
         };
     };
+
     $scope.formatDate = function(dateStr) {
         if (!dateStr) return 'No Due Date';
         let date = new Date(dateStr);
