@@ -18,9 +18,11 @@
                 <button class="theme-toggle" ng-click="toggleTheme()">Toggle Theme</button>
             </div>
         </header>
+
         <section class="task-inputs">
             <input type="text" ng-model="newTask.name" placeholder="Task name...">
-            <input type="date" ng-model="newTask.dueDate">
+            <!-- Prevent past dates -->
+            <input type="date" ng-model="newTask.dueDate" min="{{ today }}">
             <select ng-model="newTask.priority">
                 <option value="High">High</option>
                 <option value="Medium">Medium</option>
@@ -28,6 +30,7 @@
             </select>
             <button ng-click="addTask()">Add Task</button>
         </section>
+
         <div class="kanban-board">
             <div class="column" ng-repeat="(status, tasks) in taskCategories" dnd-list="tasks" ng-class="getSectionClass(status)">
                 <h2 class="section-title">{{ status }}</h2>
@@ -37,8 +40,11 @@
                         <div class="task-info">
                             <input type="text" ng-model="task.name" ng-blur="saveEdit(task, status)" ng-keypress="$event.keyCode == 13 && saveEdit(task, status)">                            
                             <div class="due-date">
-                                <span ng-if="!task.editingDueDate" ng-click="enableDateEdit(task)">{{ formatDate(task.dueDate) || 'No Due Date' }}</span>
-                                <input type="date" ng-model="task.dueDate" ng-blur="saveDateEdit(task, status)" ng-if="task.editingDueDate">
+                                <span ng-if="!task.editingDueDate" ng-click="enableDateEdit(task)">
+                                    {{ formatDate(task.dueDate) || 'No Due Date' }}
+                                </span>
+                                <!-- Prevent past dates when editing -->
+                                <input type="date" ng-model="task.dueDate" ng-blur="saveDateEdit(task, status)" ng-if="task.editingDueDate" min="{{ today }}">
                             </div>
                             <select ng-model="task.priority" ng-change="saveEdit(task, status)">
                                 <option value="High">High</option>
